@@ -10,6 +10,7 @@ const CountriesWrapper = styled.div`
   flex-direction: column;
   height: 100%;
   border-radius: 4px;
+  text-align: center;
 `
 
 const CountryDiv = styled.div `
@@ -19,23 +20,26 @@ flex-direction: column`
 
 const CountryNumber = styled.div `
 color: #02545f
-font-weight: bold`
+font-weight: bold;`
 
 const CountryTitle = styled.div`
 color: #02545f;
-font-weight: bold;
-display: flex;`
+font-weight: bold;`
 
 const CountryDetails = styled.div`
-display: flex`
+display: flex;
+flex-direction: column`
 
-const CountryChange = styled.div``
+const CountryChange = styled.div`
+font-size: 13px;
+color: ${props => props.color}`
 
 const CountryName = styled.div``
 
 
 
-const CountryValue = styled.div``
+const CountryValue = styled.div`
+font-size: 25px`
 
 
 
@@ -111,8 +115,8 @@ class CountryPivot extends React.PureComponent {
             <CountryName>{country[0].split("|")[0]}</CountryName>
             </CountryTitle>
             <CountryDetails>
-            <CountryValue onClick= {() => {this.handleClick({link: country[1]},event)}} ><strong>{country[2].toLocaleString()} </strong></CountryValue>
-            {country.length < 4 ? null :  ([country[2] > country[3]? (<div style={{color:"green"}}>▲</div>) : (<div style={{color:"red"}}>▼</div>) ,<CountryChange> {" "} {Math.floor(country[2] / (country[3] || 1)*100)}{"% SPLY"} </CountryChange>]  )}
+            <CountryValue onClick= {() => {this.handleClick({link: country[1]},event)}} ><strong>{country[2].toLocaleString(undefined,{style: 'percent', minimumFractionDigits:0})} </strong></CountryValue>
+            {country.length < 4 ? null :  (<CountryChange color = { country[2] > country[3]? "green" : "red"}> {" "} {(country[2] / (country[3] || 1) - 1).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:0})}{" SPLY"} </CountryChange>  )}
             </CountryDetails>
             </>
           </CountryDiv>

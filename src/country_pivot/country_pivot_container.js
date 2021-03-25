@@ -43,6 +43,15 @@ const baseOptions = {
     default: '#6B6B6B',
     section: 'Style',
     order: 1
+  },
+
+  items_shown : {
+    type: `string`,
+    label: `Subtext Color`,
+    display: `color`,
+    default: 3,
+    section: 'Style',
+    order: 1
   }
 }
 
@@ -87,14 +96,12 @@ looker.plugins.visualizations.add({
 
     }
 
-    console.log(data)
     var dataPoints = data.reduce((acc, curr) =>{
         Object.keys(curr).forEach(label => 
         {     
           Object.keys(curr[label]).forEach(valItem => 
           {      
            if(typeof(curr[label][valItem]) == "object"){
-            console.log(valItem)
             acc[valItem] = acc[valItem] || {}
             acc[valItem].links = acc[valItem].links || curr[label][valItem].links
             acc[valItem][label] = (acc[valItem][label] || 0) + curr[label][valItem].value *1}})
@@ -103,8 +110,26 @@ looker.plugins.visualizations.add({
         return acc},{}
         )
     
-    dataPoints = Object.keys(dataPoints).map(item => {console.log(item);return ([item].concat(Object.values(dataPoints[item])))}).sort(function(a,b){ return b[2] - a[2]}).slice(0,4)
-    console.log(dataPoints)
+    dataPoints = Object.keys(dataPoints).map(item => {return ([item].concat(Object.values(dataPoints[item])))}).sort(function(a,b){ return b[2] - a[2]})
+    
+    //get totals of all countries - delete if raw numbers preferable
+
+    var totals = dataPoints.reduce((acc, curr) => {(curr.slice(2).forEach((item,place) => {
+      acc[place] = (acc[place] || 0) + item;}));
+      return acc},
+      [])
+    
+    // get percentage share 
+    dataPoints = dataPoints.map(item => {
+      var numbers = item.slice(2)
+      var data = item.slice(0,2)
+      numbers = numbers.map((item,num) => {return (item / totals[num])})
+      return data.concat(numbers)
+    }) 
+
+    dataPoints = dataPoints.slice(0,config["items_shown"])
+ 
+  
         
     
     const options = Object.assign({}, baseOptions)
