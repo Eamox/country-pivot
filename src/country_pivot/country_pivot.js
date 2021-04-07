@@ -16,7 +16,8 @@ const CountriesWrapper = styled.div`
 const CountryDiv = styled.div `
 font-size:20px;
 display:flex;
-flex-direction: column`
+flex-direction: column;
+margin-bottom: 5px`
 
 const CountryNumber = styled.div `
 color: #02545f
