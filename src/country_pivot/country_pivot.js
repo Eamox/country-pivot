@@ -116,7 +116,7 @@ class CountryPivot extends React.PureComponent {
             <CountryName>{country[0].split("|")[0]}</CountryName>
             </CountryTitle>
             <CountryDetails>
-            <CountryValue onClick= {() => {this.handleClick({link: country[1]},event)}} ><strong>{country[2].toLocaleString(undefined,{style: 'percent', minimumFractionDigits:0})} </strong></CountryValue>
+            <CountryValue onClick= {() => {this.handleClick({link: country[1]},event)}} ><strong>{country[2].toLocaleString(undefined,{style: 'percent', minimumFractionDigits:1})} </strong></CountryValue>
             {country.length < 4 ? null :  (<CountryChange color = { country[2] > country[3]? "green" : "red"}> {" "} {(country[2] / (country[3] || 1) - 1).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:0})}{" SPLY"} </CountryChange>  )}
             </CountryDetails>
             </>
